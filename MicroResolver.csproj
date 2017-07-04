@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <PackageId>MicroResolver</PackageId>
+    <version>1.0.0</version>
+    <title>MicroResolver</title>
+    <authors>neuecc</authors>
+    <owners>neuecc</owners>
+    <projectUrl>https://github.com/neuecc/MicroResolver/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extremely fast micro service locator.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <tags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</tags>
+  </PropertyGroup>
+
+</Project>
