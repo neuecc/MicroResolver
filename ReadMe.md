@@ -58,7 +58,7 @@ class Program
 }
 ```
 
-If transient, you can use `TransientResolver`. If singleton, you can use `SingletonResolver. And you can register factory method by `Register` or `RegisterMany`.
+If transient, you can use `TransientResolver`. If singleton, you can use `SingletonResolver`. And you can register factory method by `Register` or `RegisterMany`.
 
 `CompositeResolver` is best way to resolve instance, it resolve to use `SingletonResolver` at first, if not registered, use `TransientResolver`.
 
