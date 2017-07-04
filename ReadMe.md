@@ -1,6 +1,6 @@
 MicroResolver
 ===
-Extremely fast micro service locator.
+Extremely Fast Micro Service Locator.
 
 Quick Start
 ---
