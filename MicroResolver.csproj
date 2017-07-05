@@ -1,17 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
-    <PackageId>MicroResolver</PackageId>
-    <version>1.1.0</version>
-    <title>MicroResolver</title>
-    <authors>neuecc</authors>
-    <owners>neuecc</owners>
-    <projectUrl>https://github.com/neuecc/MicroResolver/</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Extremely fast micro service locator.</description>
-    <releaseNotes>Initial release.</releaseNotes>
-    <tags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</tags>
-  </PropertyGroup>
-
+    <PropertyGroup>
+        <TargetFrameworks>netstandard1.4;net45</TargetFrameworks>
+        <PackageId>MicroResolver</PackageId>
+        <version>1.2.0</version>
+        <title>MicroResolver</title>
+        <authors>neuecc</authors>
+        <owners>neuecc</owners>
+        <projectUrl>https://github.com/neuecc/MicroResolver/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Extremely fast micro service locator.</description>
+        <releaseNotes>fix dependency.</releaseNotes>
+        <tags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5" />
+        </frameworkAssemblies>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+            </group>
+            <group targetFramework=".NETStandard1.4">
+            </group>
+        </dependencies>
+    </PropertyGroup>
 </Project>

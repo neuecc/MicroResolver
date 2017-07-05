@@ -105,7 +105,7 @@ namespace MicroResolver
     // Singleton -> Transient
     public class CompositeResolver : IObjectResolver
     {
-        public static readonly IObjectResolver Instance = new CompositeResolver();
+        public static readonly IObjectResolver Default = new CompositeResolver();
 
         CompositeResolver()
         {
@@ -114,11 +114,11 @@ namespace MicroResolver
 
         public bool TryResolve<T>(out T instance)
         {
-            if (SingletonResolver.Instance.TryResolve<T>(out instance))
+            if (SingletonResolver.Default.TryResolve<T>(out instance))
             {
                 return true;
             }
-            else if (TransientResolver.Instance.TryResolve<T>(out instance))
+            else if (TransientResolver.Default.TryResolve<T>(out instance))
             {
                 return true;
             }
@@ -127,11 +127,11 @@ namespace MicroResolver
 
         public bool TryResolveMany<T>(out IEnumerable<T> instance) where T : class
         {
-            if (SingletonResolver.Instance.TryResolveMany<T>(out instance))
+            if (SingletonResolver.Default.TryResolveMany<T>(out instance))
             {
                 return true;
             }
-            else if (TransientResolver.Instance.TryResolveMany<T>(out instance))
+            else if (TransientResolver.Default.TryResolveMany<T>(out instance))
             {
                 return true;
             }
@@ -182,7 +182,7 @@ namespace MicroResolver
 
     public class TransientResolver : IResolveContainer
     {
-        public static readonly IResolveContainer Instance = new TransientResolver();
+        public static readonly IResolveContainer Default = new TransientResolver();
 
         TransientResolver()
         {
@@ -282,7 +282,7 @@ namespace MicroResolver
 
     public class SingletonResolver : IResolveContainer
     {
-        public static readonly IResolveContainer Instance = new SingletonResolver();
+        public static readonly IResolveContainer Default = new SingletonResolver();
 
         SingletonResolver()
         {

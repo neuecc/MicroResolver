@@ -42,15 +42,15 @@ class Program
     static Program()
     {
         // 1. Configure the container (register)
-        TransientResolver.Instance.Register<IOrderRepository>(() => new SqlOrderRepository());
-        SingletonResolver.Instance.Register<ILogger>(() => new FileLogger());
-        TransientResolver.Instance.Register(() => new CancelOrderHandler(CompositeResolver.Instance));
+        TransientResolver.Default.Register<IOrderRepository>(() => new SqlOrderRepository());
+        SingletonResolver.Default.Register<ILogger>(() => new FileLogger());
+        TransientResolver.Default.Register(() => new CancelOrderHandler(CompositeResolver.Default));
     }
 
     static void Main(string[] args)
     {
         // 2. Use the container
-        var handler = CompositeResolver.Instance.Resolve<CancelOrderHandler>();
+        var handler = CompositeResolver.Default.Resolve<CancelOrderHandler>();
 
         var orderId = Guid.Parse(args[0]);
         // ...
@@ -84,7 +84,7 @@ Performance is extremely fast because value factory is cached in generic type.
 ```csharp
 public class TransientResolver : IResolveContainer
 {
-    public static readonly IResolveContainer Instance = new TransientResolver();
+    public static readonly IResolveContainer Default = new TransientResolver();
 
     // snip...
 
