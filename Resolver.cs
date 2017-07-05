@@ -137,6 +137,47 @@ namespace MicroResolver
             }
             return false;
         }
+
+        public static IObjectResolver CreateTemp(params IObjectResolver[] resolvers)
+        {
+            return new TempCompositeResolver(resolvers);
+        }
+
+        class TempCompositeResolver : IObjectResolver
+        {
+            readonly IObjectResolver[] resolvers;
+
+            public TempCompositeResolver(IObjectResolver[] resolvers)
+            {
+                this.resolvers = resolvers;
+            }
+
+            public bool TryResolve<T>(out T instance)
+            {
+                foreach (var item in resolvers)
+                {
+                    if (item.TryResolve<T>(out instance))
+                    {
+                        return true;
+                    }
+                }
+                instance = default(T);
+                return false;
+            }
+
+            public bool TryResolveMany<T>(out IEnumerable<T> instances) where T : class
+            {
+                foreach (var item in resolvers)
+                {
+                    if (item.TryResolveMany<T>(out instances))
+                    {
+                        return true;
+                    }
+                }
+                instances = default(IEnumerable<T>);
+                return false;
+            }
+        }
     }
 
     public class TransientResolver : IResolveContainer
@@ -192,6 +233,51 @@ namespace MicroResolver
         {
             public static IEnumerable<T> factories;
         }
+
+        public static IResolveContainer CreateTemp()
+        {
+            return new TempTransientResolver();
+        }
+
+        class TempTransientResolver : IResolveContainer
+        {
+            Dictionary<Type, Func<object>> value = new Dictionary<Type, Func<object>>();
+            Dictionary<Type, Func<IEnumerable<object>>> values = new Dictionary<Type, Func<IEnumerable<object>>>();
+
+            public void Register<T>(Func<T> factory)
+            {
+                value[typeof(T)] = () => (object)factory;
+            }
+
+            public void RegisterMany<T>(params Func<T>[] factories) where T : class
+            {
+                values[typeof(T)] = () => factories;
+            }
+
+            public bool TryResolve<T>(out T instance)
+            {
+                Func<object> v;
+                if (value.TryGetValue(typeof(T), out v))
+                {
+                    instance = (T)v();
+                    return true;
+                }
+                instance = default(T);
+                return false;
+            }
+
+            public bool TryResolveMany<T>(out IEnumerable<T> instances) where T : class
+            {
+                Func<IEnumerable<object>> v;
+                if (values.TryGetValue(typeof(T), out v))
+                {
+                    instances = (IEnumerable<T>)v();
+                    return true;
+                }
+                instances = default(IEnumerable<T>);
+                return false;
+            }
+        }
     }
 
     public class SingletonResolver : IResolveContainer
@@ -235,6 +321,51 @@ namespace MicroResolver
         static class CacheMany<T>
         {
             public static KeyValuePair<bool, T[]> values;
+        }
+
+        public static IResolveContainer CreateTemp()
+        {
+            return new TempSingletonResolver();
+        }
+
+        class TempSingletonResolver : IResolveContainer
+        {
+            Dictionary<Type, object> value = new Dictionary<Type, object>();
+            Dictionary<Type, IEnumerable<object>> values = new Dictionary<Type, IEnumerable<object>>();
+
+            public void Register<T>(Func<T> factory)
+            {
+                value[typeof(T)] = factory();
+            }
+
+            public void RegisterMany<T>(params Func<T>[] factories) where T : class
+            {
+                values[typeof(T)] = factories.Select(x => x()).ToArray();
+            }
+
+            public bool TryResolve<T>(out T instance)
+            {
+                object v;
+                if (value.TryGetValue(typeof(T), out v))
+                {
+                    instance = (T)v;
+                    return true;
+                }
+                instance = default(T);
+                return false;
+            }
+
+            public bool TryResolveMany<T>(out IEnumerable<T> instances) where T : class
+            {
+                IEnumerable<object> v;
+                if (values.TryGetValue(typeof(T), out v))
+                {
+                    instances = (IEnumerable<T>)v;
+                    return true;
+                }
+                instances = default(IEnumerable<T>);
+                return false;
+            }
         }
     }
 }

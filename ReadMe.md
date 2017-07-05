@@ -64,6 +64,19 @@ If transient, you can use `TransientResolver`. If singleton, you can use `Single
 
 `IObjectResolver` can be used ServiceLocator pattern. MicroResolver does not support autowire dependency injection.
 
+Make many container
+---
+Default `TransientResolver`, `SingletonResolver`, `CompositeResolver` is singleton. If you need to amke another container, copy and paste and create class your own - see:[Resolver.cs](https://github.com/neuecc/MicroResolver/blob/master/Resolver.cs#L106-L239).
+
+But for testing, require temporary contianer(not perfomance centric), You can use `CreateTemp` for create temporary container.
+
+```csharp
+var singleton = SingletonResolver.CreateTemp();
+var transient = TransientResolver.CrateTemp();
+
+var composite = CompositeResolver.CreateTemp(singleton, transient);
+```
+
 Performance and Technology
 ---
 Performance is extremely fast because value factory is cached in generic type.

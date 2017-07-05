@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <PackageId>MicroResolver</PackageId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>MicroResolver</title>
     <authors>neuecc</authors>
     <owners>neuecc</owners>
