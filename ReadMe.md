@@ -66,9 +66,9 @@ If transient, you can use `TransientResolver`. If singleton, you can use `Single
 
 Make many container
 ---
-Default `TransientResolver`, `SingletonResolver`, `CompositeResolver` is singleton. If you need to amke another container, copy and paste and create class your own - see:[Resolver.cs](https://github.com/neuecc/MicroResolver/blob/master/Resolver.cs#L106-L239).
+Default `TransientResolver`, `SingletonResolver`, `CompositeResolver` are singleton. If you need to make another container, copy and paste and create class your own - see:[Resolver.cs](https://github.com/neuecc/MicroResolver/blob/master/Resolver.cs#L106-L239).
 
-But for testing, require temporary contianer(not perfomance centric), You can use `CreateTemp` for create temporary container.
+for testing, require temporary contianer(not perfomance centric), You can use `CreateTemp` for create temporary container.
 
 ```csharp
 var singleton = SingletonResolver.CreateTemp();
