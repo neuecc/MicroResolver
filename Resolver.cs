@@ -114,28 +114,72 @@ namespace MicroResolver
 
         public bool TryResolve<T>(out T instance)
         {
+            var i = Cache<T>.instance;
+            if (i.Key == 2) // check transient first
+            {
+                instance = Cache<T>.factory();
+                return true;
+            }
+            else if (i.Key == 1)
+            {
+                instance = i.Value;
+                return true;
+            }
+
             if (SingletonResolver.Default.TryResolve<T>(out instance))
             {
+                Cache<T>.instance = new KeyValuePair<int, T>(1, instance);
                 return true;
             }
             else if (TransientResolver.Default.TryResolve<T>(out instance))
             {
+                Cache<T>.instance = new KeyValuePair<int, T>(2, default(T));
+                Cache<T>.factory = TransientResolver.Cache<T>.factory;
                 return true;
             }
+
             return false;
         }
 
         public bool TryResolveMany<T>(out IEnumerable<T> instance) where T : class
         {
+            var i = CacheMany<T>.instance;
+            if (i.Key == 2) // check transient first
+            {
+                instance = CacheMany<T>.factories;
+                return true;
+            }
+            else if (i.Key == 1)
+            {
+                instance = i.Value;
+                return true;
+            }
+
             if (SingletonResolver.Default.TryResolveMany<T>(out instance))
             {
+                CacheMany<T>.instance = new KeyValuePair<int, IEnumerable<T>>(1, instance);
                 return true;
             }
             else if (TransientResolver.Default.TryResolveMany<T>(out instance))
             {
+                CacheMany<T>.instance = new KeyValuePair<int, IEnumerable<T>>(2, default(IEnumerable<T>));
+                CacheMany<T>.factories = TransientResolver.CacheMany<T>.factories;
                 return true;
             }
+
             return false;
+        }
+
+        static class Cache<T>
+        {
+            public static KeyValuePair<int, T> instance; // 0 = notcached, 1 = singleton, 2 = transient
+            public static Func<T> factory;
+        }
+
+        static class CacheMany<T>
+        {
+            public static KeyValuePair<int, IEnumerable<T>> instance; // 0 = notcached, 1 = singleton, 2 = transient
+            public static IEnumerable<T> factories;
         }
 
         public static IObjectResolver CreateTemp(params IObjectResolver[] resolvers)
@@ -224,12 +268,12 @@ namespace MicroResolver
             CacheMany<T>.factories = factories.Select(x => x());
         }
 
-        static class Cache<T>
+        internal static class Cache<T>
         {
             public static Func<T> factory;
         }
 
-        static class CacheMany<T>
+        internal static class CacheMany<T>
         {
             public static IEnumerable<T> factories;
         }
