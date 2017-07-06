@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard1.4;net45</TargetFrameworks>
+        <TargetFrameworks>net45;netstandard1.4;</TargetFrameworks>
         <PackageId>MicroResolver</PackageId>
         <version>1.3.0</version>
         <title>MicroResolver</title>
@@ -22,4 +22,16 @@
             </group>
         </dependencies>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.4|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NET_45;</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+        <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+    </ItemGroup>
 </Project>
