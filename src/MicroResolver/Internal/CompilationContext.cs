@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroResolver.Internal
 {
-    // TODO:internal
-    public class CompilationContext
+    internal class CompilationContext
     {
         Dictionary<Type, Meta> registerdTypes = new Dictionary<Type, Meta>();
         Dictionary<Type, object> singletonCache = new Dictionary<Type, object>();
@@ -82,7 +79,7 @@ namespace MicroResolver.Internal
             }
         }
 
-#if NET_45
+#if DEBUG && NET_45
 
         public AssemblyBuilder DebuggingCompile(string moduleName)
         {

@@ -7,8 +7,7 @@ using System.Collections.Generic;
 
 namespace MicroResolver.Internal
 {
-    // TODO:should change to internal
-    public class Meta
+    internal class Meta
     {
         public Type InterfaceType { get; }
         public Type Type { get; }
@@ -67,8 +66,6 @@ namespace MicroResolver.Internal
             // Methods, [Inject] Only
             this.InjectMethods = this.Type.GetRuntimeMethods().Where(x => x.GetCustomAttribute<InjectAttribute>(true) != null).ToArray();
         }
-
-        // TODO:singleton require get value
 
         public void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false)
         {
