@@ -2,12 +2,15 @@
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace MicroResolver.Internal
 {
-    internal class Meta
+    internal interface IMeta
+    {
+        void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false);
+    }
+
+    internal class Meta : IMeta
     {
         public Type InterfaceType { get; }
         public Type Type { get; }
@@ -138,6 +141,92 @@ namespace MicroResolver.Internal
             else
             {
                 il.Emit(OpCodes.Callvirt, methodInfo);
+            }
+        }
+    }
+
+    internal class CollectionMeta : IMeta
+    {
+        public Type InterfaceType { get; }
+        public Meta[] Types { get; }
+        public Lifestyle Lifestyle { get; }
+
+        public CollectionMeta(Type interfaceType, Meta[] types, Lifestyle lifestyle)
+        {
+            this.InterfaceType = interfaceType;
+            this.Types = types;
+            this.Lifestyle = lifestyle;
+        }
+
+        public void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false)
+        {
+            if (!forceEmit && Lifestyle == Lifestyle.Singleton)
+            {
+                var field = context.Resolver.cacheType.MakeGenericType(InterfaceType).GetRuntimeField("factory");
+                var invoke = typeof(Func<>).MakeGenericType(InterfaceType).GetRuntimeMethod("Invoke", Type.EmptyTypes);
+                il.Emit(OpCodes.Ldsfld, field);
+                il.Emit(OpCodes.Call, invoke);
+                return;
+            }
+
+            EmitLdc_I4(il, Types.Length);
+            il.Emit(OpCodes.Newarr);
+
+            for (int i = 0; i < Types.Length; i++)
+            {
+                il.Emit(OpCodes.Dup);
+                EmitLdc_I4(il, i);
+                var meta = context.GetMeta(Types[i].Type);
+                meta.EmitNewInstance(context, il);
+                il.Emit(OpCodes.Stelem_Ref);
+            }
+        }
+
+        // Ldc_I4 optimization
+        static void EmitLdc_I4(ILGenerator il, int value)
+        {
+            switch (value)
+            {
+                case -1:
+                    il.Emit(OpCodes.Ldc_I4_M1);
+                    break;
+                case 0:
+                    il.Emit(OpCodes.Ldc_I4_0);
+                    break;
+                case 1:
+                    il.Emit(OpCodes.Ldc_I4_1);
+                    break;
+                case 2:
+                    il.Emit(OpCodes.Ldc_I4_2);
+                    break;
+                case 3:
+                    il.Emit(OpCodes.Ldc_I4_3);
+                    break;
+                case 4:
+                    il.Emit(OpCodes.Ldc_I4_4);
+                    break;
+                case 5:
+                    il.Emit(OpCodes.Ldc_I4_5);
+                    break;
+                case 6:
+                    il.Emit(OpCodes.Ldc_I4_6);
+                    break;
+                case 7:
+                    il.Emit(OpCodes.Ldc_I4_7);
+                    break;
+                case 8:
+                    il.Emit(OpCodes.Ldc_I4_8);
+                    break;
+                default:
+                    if (value >= -128 && value <= 127)
+                    {
+                        il.Emit(OpCodes.Ldc_I4_S, (sbyte)value);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Ldc_I4, value);
+                    }
+                    break;
             }
         }
     }

@@ -70,8 +70,8 @@ namespace MicroResolver.Internal
                 if (item.Value.Lifestyle == Lifestyle.Singleton)
                 {
                     var lazyFactory = Activator.CreateInstance(typeof(Lazy<>).MakeGenericType(t), new object[] { factory });
-                    var lazyValue = Activator.CreateInstance(typeof(LazyValue<>).MakeGenericType(t), lazyFactory);
-                    factory = (Delegate)typeof(LazyValue<>).MakeGenericType(t).GetRuntimeField("func").GetValue(lazyValue);
+                    var lazyValue = Activator.CreateInstance(typeof(SingletonValue<>).MakeGenericType(t), lazyFactory);
+                    factory = (Delegate)typeof(SingletonValue<>).MakeGenericType(t).GetRuntimeField("func").GetValue(lazyValue);
                 }
 
                 var setFactory = typeof(ObjectResolver).GetRuntimeMethods().First(x => x.Name == "SetFactory").MakeGenericMethod(item.Key);
@@ -103,14 +103,15 @@ namespace MicroResolver.Internal
 #endif
     }
 
-    internal class LazyValue<T>
+    internal class SingletonValue<T>
     {
-        public Func<T> func;
+        public Func<T> func; // Cache<T>.factory for singleton
+
         Lazy<T> lazyFactory;
         T value;
         bool isValueCreated;
 
-        public LazyValue(Lazy<T> lazyFactory)
+        public SingletonValue(Lazy<T> lazyFactory)
         {
             this.lazyFactory = lazyFactory;
             this.func = new Func<T>(GetValue);

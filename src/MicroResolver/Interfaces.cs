@@ -37,6 +37,49 @@ namespace MicroResolver
         T Resolve<T>();
     }
 
+    //public class ScopedResolver : IObjectResolver
+    //{
+    //    readonly IObjectResolver resolver;
+
+    //    public ScopedResolver(IObjectResolver resolver)
+    //    {
+    //        this.resolver = resolver;
+    //    }
+
+    //    public IObjectResolver BeginScope(ScopeProvider provider)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public LifestyleType LifestyleType<T>()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public T Resolve<T>()
+    //    {
+    //        //throw new NotImplementedException();
+
+    //        var type = resolver.LifestyleType<T>();
+    //        switch (type)
+    //        {
+    //            case MicroResolver.LifestyleType.NotRegistered:
+    //                break;
+    //            case MicroResolver.LifestyleType.Transient:
+    //            case MicroResolver.LifestyleType.Singleton:
+    //                break;
+    //            case MicroResolver.LifestyleType.Scoped:
+    //                // get from scoped cache?
+
+    //                break;
+    //                break;
+    //            default:
+    //                break;
+    //        }
+    //    }
+    //}
+
+
     //public interface IObjectRegister
     //{
     //    void Register<T>(Lifestyle lifestyle, Func<T> factory);
