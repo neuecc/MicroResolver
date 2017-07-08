@@ -20,8 +20,8 @@ namespace MicroResolver
 
         }
 
-#if NET_45
-        public AssemblyBuilder Save()
+#if DEBUG && NET_45
+        internal AssemblyBuilder Save()
         {
             return assembly.Save();
         }

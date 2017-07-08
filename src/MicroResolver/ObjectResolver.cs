@@ -19,6 +19,9 @@ namespace MicroResolver
             lifestyleByType = new Dictionary<Type, Lifestyle>();
         }
 
+        /// <summary>
+        /// Verify and Compile container.
+        /// </summary>
         public void Compile()
         {
             if (isCompiled) throw new Exception("todo message");
@@ -63,24 +66,17 @@ namespace MicroResolver
             if (isCompiled) throw new Exception("todo message");
 
             compilation.Add(typeof(TInterface), typeof(TImplementation), lifestyle);
-            lifestyleByType.Add(typeof(TInterface), lifestyle);
+            lifestyleByType[typeof(TInterface)] = lifestyle;
         }
 
-        //public void RegisterMany<T>(Lifestyle lifestyle, params Func<T>[] factories) where T : class
-        //{
-        //    switch (lifestyle)
-        //    {
-        //        case Lifestyle.Transient:
-        //        case Lifestyle.Scoped:
-        //            SetCachedManyFactory(new CachedFactory<IEnumerable<T>>(lifestyle, () => factories.Select(x => x()), null));
-        //            break;
-        //        case Lifestyle.Singleton:
-        //            SetCachedManyFactory(new CachedFactory<IEnumerable<T>>(lifestyle, null, new Lazy<IEnumerable<T>>(() => factories.Select(x => x()).ToArray())));
-        //            break;
-        //        default:
-        //            throw new ArgumentOutOfRangeException(nameof(lifestyle) + ": " + lifestyle);
-        //    }
-        //}
+        public void RegisterCollection<TInterface>(Lifestyle lifestyle, params Type[] implementationTypes)
+            where TInterface : class
+        {
+            if (isCompiled) throw new Exception("todo message");
+
+            compilation.AddCollection(typeof(TInterface), implementationTypes, lifestyle);
+            lifestyleByType[typeof(TInterface)] = lifestyle;
+        }
 
         public abstract T Resolve<T>();
         protected abstract void SetFactory<T>(Func<T> factory);

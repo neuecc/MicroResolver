@@ -1,4 +1,6 @@
-﻿using MicroResolver;
+﻿#pragma warning disable 169
+
+using MicroResolver;
 using MicroResolver.Internal;
 using System;
 using System.Collections.Generic;
@@ -18,19 +20,21 @@ namespace CodeGenerationDumper
             //resolver.Register<IInterface, DummyClass>(Lifestyle.Singleton);
             //resolver.Register<Moge, Moge>(Lifestyle.Transient);
 
-            resolver.Register<ISingleton1, Singleton1>(Lifestyle.Singleton);
-            resolver.Register<ITransient1, Transient1>(Lifestyle.Transient);
-            resolver.Register<ICombined1, Combined1>(Lifestyle.Transient);
+            //resolver.Register<ISingleton1, Singleton1>(Lifestyle.Singleton);
+            //resolver.Register<ITransient1, Transient1>(Lifestyle.Transient);
+            //resolver.Register<ICombined1, Combined1>(Lifestyle.Transient);
 
-            resolver.Register<IFirstService, FirstService>(Lifestyle.Singleton);
-            resolver.Register<ISecondService, SecondService>(Lifestyle.Singleton);
-            resolver.Register<IThirdService, ThirdService>(Lifestyle.Singleton);
-            resolver.Register<ISubObjectOne, SubObjectOne>(Lifestyle.Transient);
-            resolver.Register<ISubObjectTwo, SubObjectTwo>(Lifestyle.Transient);
-            resolver.Register<ISubObjectThree, SubObjectThree>(Lifestyle.Transient);
+            //resolver.Register<IFirstService, FirstService>(Lifestyle.Singleton);
+            //resolver.Register<ISecondService, SecondService>(Lifestyle.Singleton);
+            //resolver.Register<IThirdService, ThirdService>(Lifestyle.Singleton);
+            //resolver.Register<ISubObjectOne, SubObjectOne>(Lifestyle.Transient);
+            //resolver.Register<ISubObjectTwo, SubObjectTwo>(Lifestyle.Transient);
+            //resolver.Register<ISubObjectThree, SubObjectThree>(Lifestyle.Transient);
 
-            resolver.Register<IComplex1, Complex1>(Lifestyle.Transient);
+            //resolver.Register<IComplex1, Complex1>(Lifestyle.Transient);
 
+            resolver.RegisterCollection<IForCollection>(Lifestyle.Transient, typeof(Collection1), typeof(Collection2), typeof(Collection3));
+            
             var verify = resolver.DebuggingCompile();
             Verify(verify);
 
@@ -350,4 +354,24 @@ namespace CodeGenerationDumper
         }
     }
 
+
+    public interface IForCollection
+    {
+
+    }
+
+    public class Collection1 : IForCollection
+    {
+
+    }
+
+    public class Collection2 : IForCollection
+    {
+
+    }
+
+    public class Collection3 : IForCollection
+    {
+
+    }
 }

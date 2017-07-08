@@ -7,12 +7,16 @@ namespace MicroResolver.Internal
 {
     internal interface IMeta
     {
+        Type InterfaceType { get; }
+        Type OwnerType { get; }
+        Lifestyle Lifestyle { get; }
         void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false);
     }
 
     internal class Meta : IMeta
     {
         public Type InterfaceType { get; }
+        public Type OwnerType { get; }
         public Type Type { get; }
         public TypeInfo TypeInfo { get; }
         public Lifestyle Lifestyle { get; }
@@ -25,6 +29,7 @@ namespace MicroResolver.Internal
         {
             this.InterfaceType = interfaceType;
             this.Type = type;
+            this.OwnerType = type;
             this.TypeInfo = type.GetTypeInfo();
             this.Lifestyle = lifestyle;
 
@@ -79,16 +84,18 @@ namespace MicroResolver.Internal
             // Emit method parameters dependency
             // Emit call inject methods
 
+            context.EnterEmit(Type); // check circular reference
+
             if (!forceEmit && Lifestyle == Lifestyle.Singleton)
             {
                 var field = context.Resolver.cacheType.MakeGenericType(InterfaceType).GetRuntimeField("factory");
                 var invoke = typeof(Func<>).MakeGenericType(InterfaceType).GetRuntimeMethod("Invoke", Type.EmptyTypes);
                 il.Emit(OpCodes.Ldsfld, field);
                 il.Emit(OpCodes.Call, invoke);
+
+                context.ExitEmit();
                 return;
             }
-
-            context.EnterEmit(Type); // check circular reference
 
             // constructor
             foreach (var item in Constructor.GetParameters())
@@ -148,18 +155,27 @@ namespace MicroResolver.Internal
     internal class CollectionMeta : IMeta
     {
         public Type InterfaceType { get; }
-        public Meta[] Types { get; }
+        public Type OwnerType { get; }
+        public Type[] Types { get; }
         public Lifestyle Lifestyle { get; }
 
-        public CollectionMeta(Type interfaceType, Meta[] types, Lifestyle lifestyle)
+        Type innerType;
+         Meta[] metas;
+
+        public CollectionMeta(Type collectionElementType, Type interfaceType, Type[] types, Lifestyle lifestyle)
         {
+            this.OwnerType = collectionElementType;
             this.InterfaceType = interfaceType;
             this.Types = types;
             this.Lifestyle = lifestyle;
+            this.innerType = collectionElementType;
+            this.metas = types.Select(x => new Meta(interfaceType, x, Lifestyle.Transient)).ToArray();
         }
 
         public void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false)
         {
+            context.EnterEmit(InterfaceType);
+
             if (!forceEmit && Lifestyle == Lifestyle.Singleton)
             {
                 var field = context.Resolver.cacheType.MakeGenericType(InterfaceType).GetRuntimeField("factory");
@@ -170,16 +186,17 @@ namespace MicroResolver.Internal
             }
 
             EmitLdc_I4(il, Types.Length);
-            il.Emit(OpCodes.Newarr);
+            il.Emit(OpCodes.Newarr, innerType);
 
             for (int i = 0; i < Types.Length; i++)
             {
                 il.Emit(OpCodes.Dup);
                 EmitLdc_I4(il, i);
-                var meta = context.GetMeta(Types[i].Type);
-                meta.EmitNewInstance(context, il);
+                metas[i].EmitNewInstance(context, il);
                 il.Emit(OpCodes.Stelem_Ref);
             }
+
+            context.ExitEmit();
         }
 
         // Ldc_I4 optimization

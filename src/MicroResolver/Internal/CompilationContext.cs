@@ -8,8 +8,7 @@ namespace MicroResolver.Internal
 {
     internal class CompilationContext
     {
-        Dictionary<Type, Meta> registerdTypes = new Dictionary<Type, Meta>();
-        Dictionary<Type, object> singletonCache = new Dictionary<Type, object>();
+        Dictionary<Type, IMeta> registerdTypes = new Dictionary<Type, IMeta>();
         Stack<Type> circularReferenceChecker = new Stack<Type>();
 
         public ObjectResolver Resolver { get; }
@@ -21,12 +20,19 @@ namespace MicroResolver.Internal
 
         public void Add(Type interfaceType, Type implementationType, Lifestyle lifestyle)
         {
-            registerdTypes.Add(interfaceType, new Meta(interfaceType, implementationType, lifestyle));
+            registerdTypes[interfaceType] = new Meta(interfaceType, implementationType, lifestyle);
         }
 
-        public Meta GetMeta(Type type)
+        public void AddCollection(Type interfaceType, Type[] implementationType, Lifestyle lifestyle)
         {
-            Meta meta;
+            registerdTypes[typeof(IEnumerable<>).MakeGenericType(interfaceType)] = new CollectionMeta(interfaceType, typeof(IEnumerable<>).MakeGenericType(interfaceType), implementationType, lifestyle);
+            registerdTypes[typeof(IReadOnlyList<>).MakeGenericType(interfaceType)] = new CollectionMeta(interfaceType, typeof(IReadOnlyList<>).MakeGenericType(interfaceType), implementationType, lifestyle);
+            registerdTypes[interfaceType.MakeArrayType()] = new CollectionMeta(interfaceType, interfaceType.MakeArrayType(), implementationType, lifestyle);
+        }
+
+        public IMeta GetMeta(Type type)
+        {
+            IMeta meta;
             if (registerdTypes.TryGetValue(type, out meta))
             {
                 return meta;
@@ -42,7 +48,7 @@ namespace MicroResolver.Internal
             if (circularReferenceChecker.Any(x => x == type))
             {
                 circularReferenceChecker.Push(type);
-                throw new Exception("Found circular reference:" + string.Join(" -> ", circularReferenceChecker.Select(x => x.Name)));
+                throw new Exception("Found circular reference: " + string.Join(" -> ", circularReferenceChecker.Select(x => x.Name)));
             }
             else
             {
@@ -59,8 +65,9 @@ namespace MicroResolver.Internal
         {
             foreach (var item in registerdTypes)
             {
-                var t = item.Value.Type;
-                var createMethod = new DynamicMethod("Create", t, Type.EmptyTypes, t, true);
+                var t = item.Key;
+
+                var createMethod = new DynamicMethod("Create", t, Type.EmptyTypes, item.Value.OwnerType.GetTypeInfo().Module, true);
                 var il = createMethod.GetILGenerator();
                 item.Value.EmitNewInstance(this, il, forceEmit: true);
                 il.Emit(OpCodes.Ret);
@@ -79,9 +86,9 @@ namespace MicroResolver.Internal
             }
         }
 
-#if DEBUG && NET_45
+#if NET_45
 
-        public AssemblyBuilder DebuggingCompile(string moduleName)
+        internal AssemblyBuilder DebuggingCompile(string moduleName)
         {
             var assembly = new DynamicAssembly(moduleName);
 
@@ -104,12 +111,12 @@ namespace MicroResolver.Internal
     }
 
     internal class SingletonValue<T>
+        where T : class
     {
         public Func<T> func; // Cache<T>.factory for singleton
 
         Lazy<T> lazyFactory;
         T value;
-        bool isValueCreated;
 
         public SingletonValue(Lazy<T> lazyFactory)
         {
@@ -119,17 +126,7 @@ namespace MicroResolver.Internal
 
         public T GetValue()
         {
-            if (!isValueCreated)
-            {
-                var v = lazyFactory.Value;
-                value = v;
-                isValueCreated = true;
-                return v;
-            }
-            else
-            {
-                return value;
-            }
+            return value ?? (value = lazyFactory.Value);
         }
     }
 }

@@ -30,6 +30,13 @@
         <DefineConstants>TRACE;DEBUG;NET_45;</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
+        <DefineConstants>NETSTANDARD1_4;</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+        <DefineConstants>NET_45;</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
         <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
         <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
