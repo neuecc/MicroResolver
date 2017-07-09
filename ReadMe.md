@@ -241,7 +241,7 @@ MicroResolve choose inlining code generation, all dependencies are analyzed and 
 
 ```csharp
 // This is actual code generation of MicroResolver, all dependency is inlined at il code generation
-static ComplexType ResolveComposite()
+static IComplexType ResolveComposite()
 {
     var a = new ForConstructorInjection();
     a.MyField = new ForFieldInjection();
@@ -321,7 +321,7 @@ private HashTuple[][] table;
 table[hash][index] = new Func<object>(Resolve<T>);
 
 // simplest == fastest lookup
-public object Get(Type type)
+public object Resolve(Type type)
 {
     var hashCode = type.GetHashCode();
     var buckets = table[hashCode % table.Length];
