@@ -61,8 +61,11 @@ namespace MicroResolver.Internal
             circularReferenceChecker.Pop();
         }
 
-        public void Compile()
+        public IMeta[] Compile()
         {
+            var index = 0;
+            var list = new IMeta[registerdTypes.Count];
+
             foreach (var item in registerdTypes)
             {
                 var t = item.Key;
@@ -83,7 +86,11 @@ namespace MicroResolver.Internal
 
                 var setFactory = typeof(ObjectResolver).GetRuntimeMethods().First(x => x.Name == "SetFactory").MakeGenericMethod(item.Key);
                 setFactory.Invoke(Resolver, new object[] { factory });
+
+                list[index++] = item.Value;
             }
+
+            return list;
         }
 
 #if NET_45

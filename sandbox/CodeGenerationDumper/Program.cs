@@ -16,6 +16,12 @@ namespace CodeGenerationDumper
     {
         static void Main(string[] args)
         {
+            var t = typeof(Program);
+            var huga = t.GetHashCode();
+
+            var t2 = typeof(IInterface);
+            var aaa = t  == t2;
+
             var resolver = ObjectResolver.Create();
             //resolver.Register<IInterface, DummyClass>(Lifestyle.Singleton);
             //resolver.Register<Moge, Moge>(Lifestyle.Transient);
@@ -24,7 +30,7 @@ namespace CodeGenerationDumper
             //resolver.Register<ITransient1, Transient1>(Lifestyle.Transient);
             //resolver.Register<ICombined1, Combined1>(Lifestyle.Transient);
 
-            //resolver.Register<IFirstService, FirstService>(Lifestyle.Singleton);
+            resolver.Register<IFirstService, FirstService>(Lifestyle.Singleton);
             //resolver.Register<ISecondService, SecondService>(Lifestyle.Singleton);
             //resolver.Register<IThirdService, ThirdService>(Lifestyle.Singleton);
             //resolver.Register<ISubObjectOne, SubObjectOne>(Lifestyle.Transient);
@@ -33,13 +39,13 @@ namespace CodeGenerationDumper
 
             //resolver.Register<IComplex1, Complex1>(Lifestyle.Transient);
 
-            resolver.RegisterCollection<IForCollection>(Lifestyle.Transient, typeof(Collection1), typeof(Collection2), typeof(Collection3));
-            
-            var verify = resolver.DebuggingCompile();
-            Verify(verify);
+            //resolver.RegisterCollection<IForCollection>(Lifestyle.Transient, typeof(Collection1), typeof(Collection2), typeof(Collection3));
+
+            //var verify = resolver.DebuggingCompile();
+            //Verify(verify);
 
 
-            //resolver.Compile();
+            resolver.Compile();
 
             //var test = resolver.Resolve<ICombined1>();
             //Console.WriteLine(test);

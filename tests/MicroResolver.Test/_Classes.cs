@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -296,10 +297,17 @@ namespace MicroResolver.Test
     {
     }
 
-    public class ThirdService : IThirdService
+    public class ThirdService : IThirdService, IDisposable
     {
+        public int DisposeCount;
+
         public ThirdService()
         {
+        }
+
+        public void Dispose()
+        {
+            Interlocked.Increment(ref DisposeCount);
         }
     }
 
