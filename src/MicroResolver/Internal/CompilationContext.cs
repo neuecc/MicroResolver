@@ -39,7 +39,7 @@ namespace MicroResolver.Internal
             }
             else
             {
-                throw new Exception("Type is not registered, type:" + type.FullName);
+                throw new MicroResolverException("Type is not registered, type:" + type.FullName);
             }
         }
 
@@ -48,7 +48,7 @@ namespace MicroResolver.Internal
             if (circularReferenceChecker.Any(x => x == type))
             {
                 circularReferenceChecker.Push(type);
-                throw new Exception("Found circular reference: " + string.Join(" -> ", circularReferenceChecker.Select(x => x.Name)));
+                throw new MicroResolverException("Found circular reference: " + string.Join(" -> ", circularReferenceChecker.Select(x => x.Name)));
             }
             else
             {

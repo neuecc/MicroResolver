@@ -69,7 +69,7 @@ namespace MicroResolver
                         }
                         return v;
                     default:
-                        throw new Exception("TODO");
+                        throw new InvalidOperationException("Invalid Lifestyle:" + lifestyle);
                 }
             }
 
@@ -97,7 +97,7 @@ namespace MicroResolver
                         return v;
 
                     default:
-                        throw new Exception("TODO");
+                        throw new InvalidOperationException("Invalid Lifestyle:" + lifestyle);
                 }
             }
 

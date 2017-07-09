@@ -23,7 +23,7 @@ namespace MicroResolver
         /// </summary>
         public void Compile()
         {
-            if (isCompiled) throw new Exception("todo message");
+            if (isCompiled) throw new MicroResolverException("Already compiled, can not compile twice.");
 
             isCompiled = true;
             var registeredTypes = compilation.Compile();
@@ -76,7 +76,7 @@ namespace MicroResolver
 
         public Lifestyle Lifestyle(Type type)
         {
-            if (!isCompiled) throw new Exception("todo message");
+            if (!isCompiled) throw new MicroResolverException("Not yet compiled, you can access only after compile.");
 
             return lifestyleByType.Get(type);
         }
@@ -97,7 +97,7 @@ namespace MicroResolver
 
         public void Register(Lifestyle lifestyle, Type interfaceType, Type implementationType)
         {
-            if (isCompiled) throw new Exception("todo message");
+            if (isCompiled) throw new MicroResolverException("Already compiled, can not register new type when compile finished.");
             compilation.Add(interfaceType, implementationType, lifestyle);
         }
 

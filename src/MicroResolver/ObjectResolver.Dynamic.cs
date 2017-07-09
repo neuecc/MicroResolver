@@ -89,7 +89,7 @@ namespace MicroResolver.Internal
         {
             ThrowException = new Func<T>(() =>
             {
-                throw new Exception("Resolve<T> was failed, not registered. Type: " + typeof(T).FullName);
+                throw new MicroResolverException("Resolve<T> was failed, not registered. Type: " + typeof(T).FullName);
             });
         }
     }

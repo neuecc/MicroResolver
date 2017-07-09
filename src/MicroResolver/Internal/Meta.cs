@@ -35,7 +35,7 @@ namespace MicroResolver.Internal
 
             if (TypeInfo.IsValueType)
             {
-                throw new Exception("Does not support ValueType, type:" + type.Name);
+                throw new MicroResolverException("Does not support ValueType, type:" + type.Name);
             }
 
             // Constructor, single [Inject] constructor -> single most parameters constuctor 
@@ -45,11 +45,11 @@ namespace MicroResolver.Internal
                 var grouped = this.TypeInfo.DeclaredConstructors.GroupBy(x => x.GetParameters().Length).OrderByDescending(x => x.Key).FirstOrDefault();
                 if (grouped == null)
                 {
-                    throw new Exception("Type does not found injectable constructor, type:" + type.Name);
+                    throw new MicroResolverException("Type does not found injectable constructor, type:" + type.Name);
                 }
                 else if (grouped.Count() != 1)
                 {
-                    throw new Exception("Type found multiple ambiguous constructors, type:" + type.Name);
+                    throw new MicroResolverException("Type found multiple ambiguous constructors, type:" + type.Name);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace MicroResolver.Internal
             }
             else
             {
-                throw new Exception("Type found multiple [Inject] marked constructors, type:" + type.Name);
+                throw new MicroResolverException("Type found multiple [Inject] marked constructors, type:" + type.Name);
             }
 
             // Fields, [Inject] Only
