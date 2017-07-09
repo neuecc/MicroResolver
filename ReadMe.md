@@ -6,9 +6,9 @@ Features
 ---
 MicroResolver is desgined for peformance. I've released two fastest serializers [ZeroFormatter](https://github.com/neuecc/ZeroFormatter) and [MessagePack for C#](https://github.com/neuecc/MessagePack-CSharp), this library is using there dynamic il code generation technique.
 
-* [Dynamic IL Inlining](https://github.com/neuecc/MicroResolver#perforamnce-technique---dynamic-il-inlining)
-* [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#perforamnce-technique---generic-type-caching-per-resolver)
-* [Fast NonGeneric lookup table](https://github.com/neuecc/MicroResolver#perforamnce-technique---fast-nongeneric-lookup-table)
+* [Dynamic IL Inlining](https://github.com/neuecc/MicroResolver#performance-technique---dynamic-il-inlining)
+* [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#performance-technique---generic-type-caching-per-resolver)
+* [Fast NonGeneric lookup table](https://github.com/neuecc/MicroResolver#performance-technique---fast-nongeneric-lookup-table)
 
 Marked fastest on Transient, Combined and IEnumerable by [IoCPerformance](https://github.com/danielpalme/IocPerformance).
 
@@ -182,7 +182,7 @@ public class MyScopeProvider : ScopeProvider
 }
 ```
 
-Perforamnce Technique - Dynamic IL Inlining
+Performance Technique - Dynamic IL Inlining
 ---
 Everyone creates dynamic code generation for optimize performance. But if target is complex type?
 
@@ -258,7 +258,7 @@ static IComplexType ResolveComposite()
 }
 ```
 
-Perforamnce Technique - Generic Type Caching per resolver
+Performance Technique - Generic Type Caching per resolver
 ---
 The generated code is cached. And how to retrieve it? ConcurrentDictionary? Dictionary? They are slow. MicroResolve choose generic type caching.
 
@@ -294,7 +294,7 @@ The code path is too short, it means no overhead.
 
 > But generated container can not remove. This is a design constraint.
 
-Perforamnce Technique - Fast NonGeneric lookup table
+Performance Technique - Fast NonGeneric lookup table
 ---
 Type Caching is require to use generics method. But often framework requests nongeneric type.
 
