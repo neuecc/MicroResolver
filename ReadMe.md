@@ -6,11 +6,11 @@ Features
 ---
 MicroResolver is desgined for peformance. I've released two fastest serializers [ZeroFormatter](https://github.com/neuecc/ZeroFormatter) and [MessagePack for C#](https://github.com/neuecc/MessagePack-CSharp), this library is using there dynamic il code generation technique.
 
-* Dynamic IL Inlining 
-* Generic Type Caching per resolver
-* Fast NonGeneric lookup table
+* [Dynamic IL Inlining](https://github.com/neuecc/MicroResolver#perforamnce-technique---dynamic-il-inlining)
+* [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#perforamnce-technique---generic-type-caching-per-resolver)
+* [Fast NonGeneric lookup table](https://github.com/neuecc/MicroResolver#perforamnce-technique---fast-nongeneric-lookup-table)
 
-Marked fastest on Transient, Complex and IEnumerable of [IoCPerformance](https://github.com/danielpalme/IocPerformance).
+Marked fastest on Transient, Combined and IEnumerable by [IoCPerformance](https://github.com/danielpalme/IocPerformance).
 
 |**Container**|**Singleton**|**Transient**|**Combined**|**Complex**|
 |:------------|------------:|------------:|-----------:|----------:|
@@ -31,7 +31,7 @@ Support Features - Consturctor Injection, Field Injection, Property Injection, M
 
 Quick Start
 ---
-Install from NuGet(.NET Standard 1.4)
+Install from NuGet(for .NET Framework 4.6, .NET Standard 1.4)
 
 * Install-Package [MicroResolver](https://www.nuget.org/packages/MicroResolver)
 
@@ -57,7 +57,7 @@ Notice: MicroResolver requests call `Compile` before use container.
 
 InjectionAttribute and Resolve Collection
 ---
-MicroResolver can resolver all public and private properties, fields, constructor and methods. Inject target have to mark `[Inject]` attribute.
+MicroResolver can resolve all public and private properties, fields, constructor and methods. Inject target have to mark `[Inject]` attribute.
 
 ```csharp
 public class MyType : IMyType
