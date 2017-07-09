@@ -2,21 +2,21 @@
     <PropertyGroup>
         <TargetFrameworks>net46;netstandard1.4;</TargetFrameworks>
         <PackageId>MicroResolver</PackageId>
-        <version>2.1.0</version>
-        <title>MicroResolver</title>
-        <authors>neuecc</authors>
-        <owners>neuecc</owners>
-        <projectUrl>https://github.com/neuecc/MicroResolver/</projectUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Extremely fast dependency injection library.</description>
-        <releaseNotes>Improve CompositeResolver Performance.</releaseNotes>
-        <tags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</tags>
-        <dependencies>
+        <Version>2.1.0</Version>
+        <Title>MicroResolver</Title>
+        <Authors>neuecc</Authors>
+        <Owners>neuecc</Owners>
+        <PackageProjectUrl>https://github.com/neuecc/MicroResolver/</PackageProjectUrl>
+        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+        <Description>Extremely fast dependency injection library.</Description>
+        <PackageReleaseNotes>Improve CompositeResolver Performance.</PackageReleaseNotes>
+        <PackageTags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</PackageTags>
+        <Dependencies>
             <group targetFramework=".NETFramework4.6">
             </group>
             <group targetFramework=".NETStandard1.4">
             </group>
-        </dependencies>
+        </Dependencies>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.4|AnyCPU'">
