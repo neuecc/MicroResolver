@@ -27,6 +27,8 @@ Marked fastest on Transient, Combined and IEnumerable by [IoCPerformance](https:
 
 Full Result is [here](https://gist.github.com/neuecc/edc9daa035f3878d0eb0a31d9f76ed24).
 
+> This benchmark result is used modified generics Resolve<T> version. Please refer to https://github.com/danielpalme/IocPerformance/pull/79 for details.
+
 Support Features - Consturctor Injection, Field Injection, Property Injection, Method Injection, Collection resolver and Three lifetime support(Singleton, Transient and Scoped).
 
 Quick Start
