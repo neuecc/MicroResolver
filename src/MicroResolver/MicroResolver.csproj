@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net46;netstandard1.4;</TargetFrameworks>
+        <PackageId>MicroResolver</PackageId>
+        <version>2.0.0</version>
+        <title>MicroResolver</title>
+        <authors>neuecc</authors>
+        <owners>neuecc</owners>
+        <projectUrl>https://github.com/neuecc/MicroResolver/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Extremely fast dependency injection library.</description>
+        <releaseNotes>Improve CompositeResolver Performance.</releaseNotes>
+        <tags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.6">
+            </group>
+            <group targetFramework=".NETStandard1.4">
+            </group>
+        </dependencies>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.4|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NET_46;</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
+        <DefineConstants>NETSTANDARD1_4;</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+        <DefineConstants>NET_46;</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+        <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+    </ItemGroup>
+</Project>
