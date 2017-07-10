@@ -11,6 +11,7 @@ namespace MicroResolver
         CompilationContext compilation;
         bool isCompiled;
         FixedTypeKeyHashtable<Func<object>>.HashTuple[][] nongenericResolversTable;
+        int hashIndexForNonGenericResolversTable;
         FixedTypeKeyHashtable<Lifestyle> lifestyleByType;
 
         public ObjectResolver()
@@ -53,7 +54,8 @@ namespace MicroResolver
                 })
                 .ToArray();
 
-            nongenericResolversTable = new FixedTypeKeyHashtable<Func<object>>(prepare).table;
+            nongenericResolversTable = new FixedTypeKeyHashtable<Func<object>>(prepare, 0.12f).table; // mod load factor
+            hashIndexForNonGenericResolversTable = nongenericResolversTable.Length - 1;
         }
 
         void CreateLifestyleTypeHashTable(IMeta[] registeredTypes)
@@ -121,7 +123,7 @@ namespace MicroResolver
         public object Resolve(Type type)
         {
             var hashCode = type.GetHashCode();
-            var buckets = nongenericResolversTable[hashCode % nongenericResolversTable.Length];
+            var buckets = nongenericResolversTable[hashCode & hashIndexForNonGenericResolversTable];
 
             for (int i = 0; i < buckets.Length; i++)
             {
