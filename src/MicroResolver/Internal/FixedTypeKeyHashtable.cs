@@ -8,16 +8,12 @@ namespace MicroResolver.Internal
         internal HashTuple[][] table;
         internal int indexFor;
 
-        static readonly int MaximumCapacity = 1 << 30;
-
         public FixedTypeKeyHashtable(KeyValuePair<Type, TValue>[] values, float loadFactor = 0.75f)
         {
             var initialCapacity = (int)((float)values.Length / loadFactor);
-            if (initialCapacity > MaximumCapacity)
-            {
-                initialCapacity = MaximumCapacity;
-            }
 
+            // make power of 2(and use mask)
+            // see: Hashing https://en.wikipedia.org/wiki/Hash_table
             var capacity = 1;
             while (capacity < initialCapacity)
             {
