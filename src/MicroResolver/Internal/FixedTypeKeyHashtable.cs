@@ -9,7 +9,7 @@ namespace MicroResolver.Internal
 
         public FixedTypeKeyHashtable(KeyValuePair<Type, TValue>[] values)
         {
-            var capacity = (double)((float)values.Length / 0.22f);
+            var capacity = (double)((float)values.Length / 0.12f);
             capacity = (capacity > 3.0) ? HashHelper.GetPrime((int)capacity) : 3;
             table = new HashTuple[(int)capacity][];
 

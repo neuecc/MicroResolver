@@ -123,6 +123,11 @@ namespace MicroResolver
             var hashCode = type.GetHashCode();
             var buckets = nongenericResolversTable[hashCode % nongenericResolversTable.Length];
 
+            if (buckets.Length == 1) // optimize path, hit[1] ignore type check
+            {
+                return buckets[0].value.Invoke();
+            }
+
             for (int i = 0; i < buckets.Length; i++)
             {
                 if (buckets[i].type == type)
