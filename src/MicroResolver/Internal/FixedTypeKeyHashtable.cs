@@ -57,7 +57,7 @@ namespace MicroResolver.Internal
                 }
             }
 
-            throw new MicroResolverException("Type was not dound, Type: " + type.FullName);
+            throw new KeyNotFoundException("Type was not dound, Type: " + type.FullName);
         }
 
         public bool TryGet(Type type, out TValue value)
