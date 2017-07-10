@@ -303,15 +303,15 @@ struct HashTuple
 private HashTuple[][] table;
 
 // register - Func<T> -> Func<object> by delegate covariance
-table[hash][index] = new Func<object>(Resolve<T>);
+table[hash][index] = new Func<object>(Cache<T>.factory);
 
 // simplest == fastest lookup
 public object Resolve(Type type)
 {
     var hashCode = type.GetHashCode();
-    var buckets = table[hashCode % table.Length];
+    var buckets = table[hashCode & tableMaskIndex]; // table size is power of 2, fast lookup
 
-    // .Length for loop can remove array bnounds check
+    // .Length for loop can remove array bounds check
     for (int i = 0; i < buckets.Length; i++)
     {
         if (buckets[i].type == type)
