@@ -5,11 +5,11 @@ namespace MicroResolver.Internal
 {
     internal class FixedTypeKeyHashtable<TValue>
     {
-        HashTuple[][] table;
+        internal HashTuple[][] table;
 
         public FixedTypeKeyHashtable(KeyValuePair<Type, TValue>[] values)
         {
-            var capacity = (double)((float)values.Length / 0.72f);
+            var capacity = (double)((float)values.Length / 0.22f);
             capacity = (capacity > 3.0) ? HashHelper.GetPrime((int)capacity) : 3;
             table = new HashTuple[(int)capacity][];
 
@@ -68,7 +68,7 @@ namespace MicroResolver.Internal
             return false;
         }
 
-        struct HashTuple
+        internal struct HashTuple
         {
             public Type type;
             public TValue value;

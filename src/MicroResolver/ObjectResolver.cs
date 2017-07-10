@@ -10,7 +10,7 @@ namespace MicroResolver
     {
         CompilationContext compilation;
         bool isCompiled;
-        FixedTypeKeyHashtable<Func<object>> nongenericResolversTable;
+        FixedTypeKeyHashtable<Func<object>>.HashTuple[][] nongenericResolversTable;
         FixedTypeKeyHashtable<Lifestyle> lifestyleByType;
 
         public ObjectResolver()
@@ -53,7 +53,7 @@ namespace MicroResolver
                 })
                 .ToArray();
 
-            nongenericResolversTable = new FixedTypeKeyHashtable<Func<object>>(prepare);
+            nongenericResolversTable = new FixedTypeKeyHashtable<Func<object>>(prepare).table;
         }
 
         void CreateLifestyleTypeHashTable(IMeta[] registeredTypes)
@@ -120,7 +120,18 @@ namespace MicroResolver
 
         public object Resolve(Type type)
         {
-            return nongenericResolversTable.Get(type).Invoke();
+            var hashCode = type.GetHashCode();
+            var buckets = nongenericResolversTable[hashCode % nongenericResolversTable.Length];
+
+            for (int i = 0; i < buckets.Length; i++)
+            {
+                if (buckets[i].type == type)
+                {
+                    return buckets[i].value.Invoke();
+                }
+            }
+
+            throw new MicroResolverException("Type was not dound, Type: " + type.FullName);
         }
 
         public abstract T Resolve<T>();
