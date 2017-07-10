@@ -10,7 +10,7 @@ MicroResolver is desgined for peformance. I've released two fastest serializers 
 * [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#performance-technique---generic-type-caching-per-resolver)
 * [Fast NonGeneric lookup table](https://github.com/neuecc/MicroResolver#performance-technique---fast-nongeneric-lookup-table)
 
-MicroResolver achived fastest at some tests when uses `Resolve<T>`, full result is [here](https://gist.github.com/neuecc/edc9daa035f3878d0eb0a31d9f76ed24). It is modified [IoCPerformance](https://github.com/danielpalme/IocPerformance) benchmark. MicroResolver is focused to optimize generic `Resolve<T>`, if using nongeneric edition, bit slower.
+MicroResolver achived fastest at some tests when uses `Resolve<T>`, full result is [here](https://gist.github.com/neuecc/edc9daa035f3878d0eb0a31d9f76ed24). It is modified [IoCPerformance](https://github.com/danielpalme/IocPerformance) benchmark. MicroResolver is focused to optimize generic `Resolve<T>`, if using nongeneric edition, bit slower(but still fast).
 
 Support Features - Consturctor Injection, Field Injection, Property Injection, Method Injection, Collection resolver and Three lifetime support(Singleton, Transient and Scoped).
 
