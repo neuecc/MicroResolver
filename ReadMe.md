@@ -10,24 +10,7 @@ MicroResolver is desgined for peformance. I've released two fastest serializers 
 * [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#performance-technique---generic-type-caching-per-resolver)
 * [Fast NonGeneric lookup table](https://github.com/neuecc/MicroResolver#performance-technique---fast-nongeneric-lookup-table)
 
-Marked fastest on Transient, Combined and IEnumerable by [IoCPerformance](https://github.com/danielpalme/IocPerformance).
-
-|**Container**|**Singleton**|**Transient**|**Combined**|**Complex**|
-|:------------|------------:|------------:|-----------:|----------:|
-|**No**|53<br/>50|58<br/>51|71<br/>73|87<br/>67|
-|**[abioc 0.6.0](https://github.com/JSkimming/abioc)**|46<br/>47|67<br/>55|72<br/>66|86<br/>65|
-|**[Autofac 4.6.0](https://github.com/autofac/Autofac)**|562<br/>477|545<br/>488|1408<br/>1252|4726<br/>4350|
-|**[DryIoc 2.10.4](https://bitbucket.org/dadhi/dryioc)**|49<br/>37|47<br/>47|62<br/>60|**69**<br/>57|
-|**[fFastInjector 1.0.1](https://ffastinjector.codeplex.com)**|**21**<br/>**27**|61<br/>52|145<br/>108|373<br/>223|
-|**[Mef2 1.0.30.0](https://blogs.msdn.com/b/bclteam/p/composition.aspx)**|187<br/>119|199<br/>133|274<br/>159|447<br/>266|
-|**[MicroResolver 2.0.0](https://github.com/neuecc/MicroResolver)**|26<br/>33|**31**<br/>**39**|**50**<br/>**55**|72<br/>63|
-|**[Ninject 3.2.2.0](http://ninject.org)**|3978<br/>2444|12567<br/>7963|34620<br/>19315|95859*<br/>60936*|
-|**[SimpleInjector 4.0.8](https://simpleinjector.org)**|58<br/>44|82<br/>59|93<br/>76|109<br/>80|
-|**[Unity 4.0.1](http://msdn.microsoft.com/unity)**|1992<br/>1042|2745<br/>1523|7161<br/>3843|19892<br/>10586|
-
-Full Result is [here](https://gist.github.com/neuecc/edc9daa035f3878d0eb0a31d9f76ed24).
-
-> This benchmark result is used modified generics Resolve<T> version. Please refer to https://github.com/danielpalme/IocPerformance/pull/79 for details.
+MicroResolver achived fastest at some tests when uses `Resolve<T>`, full result is [here](https://gist.github.com/neuecc/edc9daa035f3878d0eb0a31d9f76ed24). It is modified [IoCPerformance](https://github.com/danielpalme/IocPerformance) benchmark. MicroResolver is focused to optimize generic `Resolve<T>`, if using nongeneric edition, bit slower.
 
 Support Features - Consturctor Injection, Field Injection, Property Injection, Method Injection, Collection resolver and Three lifetime support(Singleton, Transient and Scoped).
 
