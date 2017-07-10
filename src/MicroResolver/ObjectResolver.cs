@@ -48,7 +48,7 @@ namespace MicroResolver
             var prepare = registeredTypes
                 .Select(item =>
                 {
-                    var resolver = (Func<object>)resolveMethod.MakeGenericMethod(item.InterfaceType).CreateDelegate(typeof(Func<object>), this);
+                    var resolver = (Func<object>)item.EmittedDelegate;
                     return new KeyValuePair<Type, Func<object>>(item.InterfaceType, resolver);
                 })
                 .ToArray();

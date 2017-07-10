@@ -87,6 +87,7 @@ namespace MicroResolver.Internal
                 var setFactory = typeof(ObjectResolver).GetRuntimeMethods().First(x => x.Name == "SetFactory").MakeGenericMethod(item.Key);
                 setFactory.Invoke(Resolver, new object[] { factory });
 
+                item.Value.EmittedDelegate = factory;
                 list[index++] = item.Value;
             }
 

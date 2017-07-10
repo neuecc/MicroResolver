@@ -11,6 +11,9 @@ namespace MicroResolver.Internal
         Type OwnerType { get; }
         Lifestyle Lifestyle { get; }
         void EmitNewInstance(CompilationContext context, ILGenerator il, bool forceEmit = false);
+
+        // internal!
+        Delegate EmittedDelegate { get; set; }
     }
 
     internal class Meta : IMeta
@@ -24,6 +27,7 @@ namespace MicroResolver.Internal
         public FieldInfo[] InjectFields { get; }
         public PropertyInfo[] InjectProperties { get; }
         public MethodInfo[] InjectMethods { get; }
+        public Delegate EmittedDelegate { get; set; }
 
         public Meta(Type interfaceType, Type type, Lifestyle lifestyle)
         {
@@ -158,9 +162,10 @@ namespace MicroResolver.Internal
         public Type OwnerType { get; }
         public Type[] Types { get; }
         public Lifestyle Lifestyle { get; }
+        public Delegate EmittedDelegate { get; set; }
 
         Type innerType;
-         Meta[] metas;
+        Meta[] metas;
 
         public CollectionMeta(Type collectionElementType, Type interfaceType, Type[] types, Lifestyle lifestyle)
         {

@@ -2,14 +2,14 @@
     <PropertyGroup>
         <TargetFrameworks>net46;netstandard1.4;</TargetFrameworks>
         <PackageId>MicroResolver</PackageId>
-        <Version>2.1.0</Version>
+        <Version>2.2.0</Version>
         <Title>MicroResolver</Title>
         <Authors>neuecc</Authors>
         <Owners>neuecc</Owners>
         <PackageProjectUrl>https://github.com/neuecc/MicroResolver/</PackageProjectUrl>
         <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
         <Description>Extremely fast dependency injection library.</Description>
-        <PackageReleaseNotes>Improve CompositeResolver Performance.</PackageReleaseNotes>
+        <PackageReleaseNotes>Improve NonGenerics Performance.</PackageReleaseNotes>
         <PackageTags>dependency-injection, DI, Inversion-of-Control, IOC, ServiceLocator</PackageTags>
         <Dependencies>
             <group targetFramework=".NETFramework4.6">
