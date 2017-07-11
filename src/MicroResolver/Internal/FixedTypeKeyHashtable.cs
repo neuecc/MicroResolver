@@ -49,7 +49,14 @@ namespace MicroResolver.Internal
             var hashCode = type.GetHashCode();
             var buckets = table[hashCode & indexFor];
 
-            for (int i = 0; i < buckets.Length; i++)
+            if (buckets == null) goto ERROR;
+
+            if (buckets[0].type == type)
+            {
+                return buckets[0].value;
+            }
+
+            for (int i = 1; i < buckets.Length; i++)
             {
                 if (buckets[i].type == type)
                 {
@@ -57,6 +64,7 @@ namespace MicroResolver.Internal
                 }
             }
 
+            ERROR:
             throw new KeyNotFoundException("Type was not dound, Type: " + type.FullName);
         }
 
@@ -65,7 +73,15 @@ namespace MicroResolver.Internal
             var hashCode = type.GetHashCode();
             var buckets = table[hashCode & indexFor];
 
-            for (int i = 0; i < buckets.Length; i++)
+            if (buckets == null) goto END;
+
+            if (buckets[0].type == type)
+            {
+                value = buckets[0].value;
+                return true;
+            }
+
+            for (int i = 1; i < buckets.Length; i++)
             {
                 if (buckets[i].type == type)
                 {
@@ -74,6 +90,7 @@ namespace MicroResolver.Internal
                 }
             }
 
+            END:
             value = default(TValue);
             return false;
         }

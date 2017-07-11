@@ -163,6 +163,17 @@ namespace MicroResolver.Test
             collection3[2].IsInstanceOf<Collection3>();
         }
 
+
+        //[Fact]
+        //public void NonGenericNotFoundTest()
+        //{
+        //    var resolver = ObjectResolver.Create();
+        //    resolver.Register<IFirstService, FirstService>(Lifestyle.Singleton);
+        //    resolver.Compile();
+
+        //    resolver.Resolve(typeof(ITransient1));
+        //}
+
         [Fact]
         public void ScopeTest()
         {

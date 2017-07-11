@@ -56,6 +56,15 @@ namespace MicroResolver
 
             nongenericResolversTable = new FixedTypeKeyHashtable<Func<object>>(prepare, 0.12f).table; // mod load factor
             hashIndexForNonGenericResolversTable = nongenericResolversTable.Length - 1;
+
+            // fill empty for reduce null check
+            for (int i = 0; i < nongenericResolversTable.Length; i++)
+            {
+                if (nongenericResolversTable[i] == null)
+                {
+                    nongenericResolversTable[i] = NoType.SingleHashArray;
+                }
+            }
         }
 
         void CreateLifestyleTypeHashTable(IMeta[] registeredTypes)
@@ -125,7 +134,13 @@ namespace MicroResolver
             var hashCode = type.GetHashCode();
             var buckets = nongenericResolversTable[hashCode & hashIndexForNonGenericResolversTable];
 
-            for (int i = 0; i < buckets.Length; i++)
+            // optimize for single case
+            if (buckets[0].type == type)
+            {
+                return buckets[0].value.Invoke();
+            }
+
+            for (int i = 1; i < buckets.Length; i++)
             {
                 if (buckets[i].type == type)
                 {
@@ -133,10 +148,17 @@ namespace MicroResolver
                 }
             }
 
+            ERROR:
             throw new MicroResolverException("Type was not dound, Type: " + type.FullName);
         }
 
         public abstract T Resolve<T>();
         protected abstract void SetFactory<T>(Func<T> factory);
+    }
+
+    internal class NoType
+    {
+        internal static readonly FixedTypeKeyHashtable<Func<object>>.HashTuple[]
+            SingleHashArray = new[] { new FixedTypeKeyHashtable<Func<object>>.HashTuple() { type = typeof(NoType) } };
     }
 }

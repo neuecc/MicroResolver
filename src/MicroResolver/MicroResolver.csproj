@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFrameworks>net46;netstandard1.4;</TargetFrameworks>
         <PackageId>MicroResolver</PackageId>
-        <Version>2.3.3</Version>
+        <Version>2.3.4</Version>
         <Title>MicroResolver</Title>
         <Authors>neuecc</Authors>
         <Owners>neuecc</Owners>
