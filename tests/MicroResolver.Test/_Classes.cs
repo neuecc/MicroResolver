@@ -288,6 +288,8 @@ namespace MicroResolver.Test
 
     public class SecondService : ISecondService
     {
+        private static readonly int staticInitialzierRequiredField = 1;
+
         public SecondService()
         {
         }

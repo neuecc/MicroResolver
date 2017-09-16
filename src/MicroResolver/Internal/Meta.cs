@@ -46,7 +46,7 @@ namespace MicroResolver.Internal
             var injectConstructors = this.TypeInfo.DeclaredConstructors.Where(x => x.GetCustomAttribute<InjectAttribute>(true) != null).ToArray();
             if (injectConstructors.Length == 0)
             {
-                var grouped = this.TypeInfo.DeclaredConstructors.GroupBy(x => x.GetParameters().Length).OrderByDescending(x => x.Key).FirstOrDefault();
+                var grouped = this.TypeInfo.DeclaredConstructors.Where(x => !x.IsStatic).GroupBy(x => x.GetParameters().Length).OrderByDescending(x => x.Key).FirstOrDefault();
                 if (grouped == null)
                 {
                     throw new MicroResolverException("Type does not found injectable constructor, type:" + type.Name);
