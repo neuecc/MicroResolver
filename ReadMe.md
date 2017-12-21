@@ -4,7 +4,7 @@ Extremely Fast Dependency Injection Library.
 
 Features
 ---
-MicroResolver is desgined for peformance. I've released two fastest serializers [ZeroFormatter](https://github.com/neuecc/ZeroFormatter) and [MessagePack for C#](https://github.com/neuecc/MessagePack-CSharp), this library is using there dynamic il code generation technique.
+MicroResolver is desgined for performance. I've released two fastest serializers [ZeroFormatter](https://github.com/neuecc/ZeroFormatter) and [MessagePack for C#](https://github.com/neuecc/MessagePack-CSharp), this library is using there dynamic il code generation technique.
 
 * [Dynamic IL Inlining](https://github.com/neuecc/MicroResolver#performance-technique---dynamic-il-inlining)
 * [Generic Type Caching per resolver](https://github.com/neuecc/MicroResolver#performance-technique---generic-type-caching-per-resolver)
